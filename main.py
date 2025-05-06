@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from typing import List
 
 app = FastAPI()
@@ -27,6 +27,7 @@ assessments_db = [
 def home():
     return {"message": "SHL Assessment API is running"}
 
+# Existing recommendation endpoint (more useful for your use case)
 @app.get("/recommend")
 def recommend(query: str, max_duration: int = None):
     """Get recommendations based on query and optional filters"""
@@ -37,3 +38,11 @@ def recommend(query: str, max_duration: int = None):
                 continue
             results.append(test)
     return {"recommendations": results[:10]}  # Return max 10 results
+
+# New simple query endpoint (only add if you need it)
+@app.get("/query")
+async def get_query_result(
+    text: str = Query(..., description="Input text to process")
+):
+    """Example endpoint that echoes back the input text"""
+    return {"input": text, "result": f"You entered: {text}"}
